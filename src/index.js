@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
+import './index.css';
 
 const pizzaData = [
   {
@@ -51,7 +51,7 @@ const pizzaData = [
 function App() {
   return (
     <div>
-      <Header />
+      <Header  className="header" />
       <Menue />
       <Footer />
     </div>
@@ -59,21 +59,11 @@ function App() {
 }
 
 
-function Pizza() {
-  return (
-    <div>
-      <img src="pizzas/focaccia.jpg" alt="Pizza Margherita" />
-      <h2>Pizza Margherita</h2>
-      <p>Tomato and mozarella</p>
-      <span>10€</span>
-    </div>
-  );
-}
 
 
 function Header () {
   return (
-    <header className="header">
+    <header className="header" style={{ color: 'red', textAlign: 'center', textTransform: 'uppercase' }}>
       <h1>Fast React Pizza Co.</h1>
     </header>
   )
@@ -81,7 +71,7 @@ function Header () {
 
 function Footer () {
   return (
-    <footer className="footer">
+    <footer className="footer" style={{ textAlign: 'center', padding: '20px' }}>
       <p> {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}  We are currently open until 22:00. Come visit us or order online.</p>
     </footer>
   )
@@ -91,13 +81,23 @@ function Menue () {
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza />
-      <Pizza />
-      <Pizza />
+      <Pizza  name="Focaccia" ingredients="Bread with italian olive oil and rosemary" price={6} />
     </main>
   )
 }
 
+function Pizza({ name, ingredients, price }) {
+  return (
+    <div className="pizza">
+      <img src={`/pizzas/${name.toLowerCase().replace(/\s+/g, '-')}.jpg`} alt={name} />
+      <div className="pizza-details">
+      <h2>{name}</h2>
+      <p>{ingredients}</p>
+      <span>{price}€</span>
+      </div>
+    </div>
+  );
+}
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
