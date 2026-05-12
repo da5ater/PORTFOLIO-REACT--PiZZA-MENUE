@@ -11,35 +11,35 @@ const pizzaData = [
     soldOut: false,
   },
   {
-    name: "Pizza Margherita",
+    name: "Margherita",
     ingredients: "Tomato and mozarella",
     price: 10,
     photoName: "pizzas/margherita.jpg",
     soldOut: false,
   },
   {
-    name: "Pizza Spinaci",
+    name: "Spinaci",
     ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
     price: 12,
     photoName: "pizzas/spinaci.jpg",
     soldOut: false,
   },
   {
-    name: "Pizza Funghi",
+    name: "Funghi",
     ingredients: "Tomato, mozarella, mushrooms, and onion",
     price: 12,
     photoName: "pizzas/funghi.jpg",
     soldOut: false,
   },
   {
-    name: "Pizza Salamino",
+    name: "Salamino",
     ingredients: "Tomato, mozarella, and pepperoni",
     price: 15,
     photoName: "pizzas/salamino.jpg",
     soldOut: true,
   },
   {
-    name: "Pizza Prosciutto",
+    name: "Prosciutto",
     ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
     price: 18,
     photoName: "pizzas/prosciutto.jpg",
@@ -70,32 +70,71 @@ function Header () {
 }
 
 function Footer () {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour < closeHour;
   return (
     <footer className="footer" style={{ textAlign: 'center', padding: '20px' }}>
-      <p> {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}  We are currently open until 22:00. Come visit us or order online.</p>
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour} />
+      ) : (
+        <p>Sorry, we are closed. We open at 12:00.</p>
+      )}
     </footer>
   )
 }
 
-function Menue () {
+
+function Order ({openHour, closeHour}) {
   return (
-    <main className="menu">
-      <h2>Our Menu</h2>
-      <Pizza  name="Focaccia" ingredients="Bread with italian olive oil and rosemary" price={6} />
-    </main>
+        <div className="order">
+        <p>We are currently open until 22:00. Come visit us or order online.</p>
+        <button className="btn"> Order </button>
+        </div>
   )
 }
 
-function Pizza({ name, ingredients, price }) {
+function Menue () {
+  const pizzas = pizzaData;
   return (
-    <div className="pizza">
-      <img src={`/pizzas/${name.toLowerCase().replace(/\s+/g, '-')}.jpg`} alt={name} />
+
+    pizzas.length > 0 ? (
+    <main className="menu">
+        <h2>Our Menu</h2>
+        <ul className="pizzas">
+         {pizzas.map((pizza) => (
+          <Pizza key={pizza.name} {...pizza} />
+      ))}
+      </ul>
+    </main>
+    ) : (<p>We are still working on our menu. Please come back later </p>)
+    
+  )
+}
+
+function Pizza({ name, ingredients, price, photoName, soldOut }) {
+  if (soldOut) {
+    return (
+      <li className="pizza sold-out">
+        <img src={photoName} alt={name} />
+        <div className="pizza-details">
+        <h2>{name}</h2>
+        <p>{ingredients}</p>
+        <span>{price}€</span>
+        </div>
+      </li>
+    );
+  }
+  return (
+    <li className="pizza">
+      <img src={photoName} alt={name} />
       <div className="pizza-details">
       <h2>{name}</h2>
       <p>{ingredients}</p>
       <span>{price}€</span>
       </div>
-    </div>
+    </li>
   );
 }
 
