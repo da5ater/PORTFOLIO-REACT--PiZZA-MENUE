@@ -89,7 +89,7 @@ function Footer () {
 function Order ({openHour, closeHour}) {
   return (
         <div className="order">
-        <p>We are currently open until 22:00. Come visit us or order online.</p>
+        <p>We are currently open until {closeHour}:00. Come visit us or order online.</p>
         <button className="btn"> Order </button>
         </div>
   )
@@ -98,41 +98,33 @@ function Order ({openHour, closeHour}) {
 function Menue () {
   const pizzas = pizzaData;
   return (
-
-    pizzas.length > 0 ? (
     <main className="menu">
-        <h2>Our Menu</h2>
+
+    <h2>Our Menu</h2>
+
+   { pizzas.length > 0 ? (
+     <>
+     <p>Authentic Italian cuisine. 6 creative dishes to choose from. All from our stone oven, all organic, and all delicious.</p>
         <ul className="pizzas">
          {pizzas.map((pizza) => (
-          <Pizza key={pizza.name} {...pizza} />
-      ))}
+           <Pizza key={pizza.name} {...pizza} />
+          ))}
       </ul>
-    </main>
+      </>
     ) : (<p>We are still working on our menu. Please come back later </p>)
-    
+  }
+    </main>
   )
 }
 
 function Pizza({ name, ingredients, price, photoName, soldOut }) {
-  if (soldOut) {
-    return (
-      <li className="pizza sold-out">
-        <img src={photoName} alt={name} />
-        <div className="pizza-details">
-        <h2>{name}</h2>
-        <p>{ingredients}</p>
-        <span>{price}€</span>
-        </div>
-      </li>
-    );
-  }
   return (
-    <li className="pizza">
+    <li className={`pizza ${soldOut ? 'sold-out' : ''}`}>
       <img src={photoName} alt={name} />
       <div className="pizza-details">
       <h2>{name}</h2>
       <p>{ingredients}</p>
-      <span>{price}€</span>
+      <span>{soldOut ? 'Sold Out' : `${price}€`}</span>
       </div>
     </li>
   );
@@ -145,4 +137,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
